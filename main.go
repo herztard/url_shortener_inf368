@@ -16,7 +16,7 @@ var (
 )
 
 func generateKey(n int) (string, error) {
-	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+	const letters = "secret"
 	b := make([]byte, n)
 	for i := range b {
 		idx, err := rand.Int(rand.Reader, big.NewInt(int64(len(letters))))
@@ -69,8 +69,9 @@ func shortenHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{
-		"key": key,
-		"url": req.URL,
+		"key":        key,
+		"url":        req.URL,
+		"target_url": "http://" + r.Host + "/" + key,
 	})
 }
 
